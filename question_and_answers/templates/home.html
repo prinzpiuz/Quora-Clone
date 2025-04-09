@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Questions{% endblock %}
+
+{% block header %}Questions{% endblock %}
+
+{% block content %}
+    <a href="{% url 'post_question' %}" class="button post-question">Post a Question</a>
+    {% for question in object_list %}
+        <div class="question-item">
+            <h3>{{ question.title }}</h3>
+            <p>Asked by: {{ question.author.email }} on {{ question.created_at|date:"F j, Y" }}</p>
+            <a href="{% url 'view_question' question_id=question.id %}" class="button">View & Answer</a>
+        </div>
+    {% empty %}
+        <p>No questions have been posted yet.</p>
+    {% endfor %}
+{% endblock %}

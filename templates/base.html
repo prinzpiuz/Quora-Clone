@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Quora Clone{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{% block header %}Quora Clone{% endblock %}</h1>
+            <nav>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'question_list' %}">Questions</a>
+                    <a href="{% url 'post_question' %}">Post Question</a>
+                    <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
+            </nav>
+            <hr>
+        </header>
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            <hr>
+            <p>&copy; 2025 Quora Clone</p>
+        </footer>
+    </div>
+</body>
+</html>

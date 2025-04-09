@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ question.title }}{% endblock %}
+
+{% block header %}{{ question.title }}{% endblock %}
+
+{% block content %}
+    <div class="question-details">
+        <p>Asked by: {{ question.author.email }} on {{ question.created_at|date:"F j, Y" }}</p>
+        <p>{{ question.content }}</p>
+    </div>
+
+    <h3>Post Your Answer</h3>
+    <form method="post" action="{% url 'post_answer' question_id=question.id %}">
+        {% csrf_token %}
+        {{ answer_form.as_p }}
+        <button type="submit">Submit Answer</button>
+    </form>
+
+    <h3>Answers</h3>
+    {% for answer in question.answers.all %}
+        <div class="answer-item">
+            <p>Answered by: {{ answer.author.email }} on {{ answer.created_at|date:"F j, Y" }}</p>
+            <p>{{ answer.content }}</p>
+            <form method="post" action="{% url 'like_answer' answer_id=answer.id %}">
+                {% csrf_token %}
+                <button type="submit" class="like-button {% if request.user in answer.likes.all %}liked{% endif %}">
+                    {% if request.user in answer.likes.all %}Unlike{% else %}Like{% endif %} ({{ answer.likes.count }})
+                </button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No answers yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'question_list' %}" class="button back-button">Back to Questions</a>
+{% endblock %}
